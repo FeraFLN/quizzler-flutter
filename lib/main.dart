@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quizzler/question.dart';
+import 'package:quizzler/quiz.dart';
 
 void main() => runApp(Quizzler());
 
@@ -26,12 +28,9 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
 
- Quiz quiz = Quiz([Question(question:"Fernando é legal?",answer: true),
-                  Question(question:"O sobre nome de Fernando é Neto?",answer: false)
+ Quiz quiz = Quiz([Question("Fernando é legal?", true),
+                  Question("O sobre nome de Fernando é Neto?", false)
  ]);
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +69,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 setState(() {
-                  quiz.checkAnswer(true);
+                  quiz.checkAnswer(true,context);
                 });
               },
             ),
@@ -90,7 +89,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 setState(() {
-                  quiz.checkAnswer(false);
+                  quiz.checkAnswer(false,context);
                 });
               },
             ),
@@ -104,61 +103,8 @@ class _QuizPageState extends State<QuizPage> {
   }
 }
 
-class Quiz{
-  int index = 0;
-  List<Icon> icons = [];
-  final List<Question> questions;
 
-  Quiz(this.questions): assert(questions!= null);
 
-  Question getQuestion(){
-    return questions[index];
-  }
-
-  String getStringQuestion(){
-    return getQuestion().getQuestion();
-  }
-
-  List<Icon> getIcons(){
-    return icons;
-  }
-
-  void checkAnswer(bool answer){
-    icons.add(getQuestion().getIcon(answer));
-    nextQuestion();
-  }
-  void nextQuestion(){
-    if(index < questions.length-1){
-      index++;
-    }else{
-      //TODO: last page
-    }
-  }
-}
-
-class Question{
-  final String question;
-  final bool answer;
-  const Question({this.question, this.answer})
-      :assert(question != null),
-       assert(answer != null);
-
-  String getQuestion(){
-    return question;
-  }
-
-  bool getAnswer(){
-    return answer;
-  }
-
-  Icon getIcon(bool answer){
-    if(this.answer == answer){
-      return Icon(Icons.check, color: Colors.green,);
-    }else{
-      return Icon(Icons.close, color: Colors.red,);
-    }
-  }
-}
 /*
 question1: 'You can lead a cow down stairs but not up stairs.', false,
 question2: 'Approximately one quarter of human bones are in the feet.', true,
